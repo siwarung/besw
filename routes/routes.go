@@ -14,6 +14,11 @@ func URL(app *fiber.App) {
 	// Route auth
 	userRoute := app.Group("/api/auth")
 	userRoute.Post("/register", controller.CreateUser)
+	userRoute.Post("/login", controller.LoginUser)
+
+	// Protected routes (Hanya bisa diakses dengan token JWT)
+	// protected := app.Group("/api/auth", middleware.JWTMiddleware)
+	// protected.Get("/profile", controller.ProfileUser)
 
 	// Route 404 harus di paling bawah agar tidak mengganggu route lain
 	app.Use(func(c *fiber.Ctx) error {
