@@ -5,41 +5,52 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/siwarung/besw/config"
 	"github.com/siwarung/besw/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type UserRepository struct {
-	collection *mongo.Collection
-}
-
-func NewUserRepository(db *mongo.Database) *UserRepository {
-	return &UserRepository{
-		collection: db.Collection("users"),
-	}
-}
-
 // Membuat user baru
-func (r *UserRepository) CreateUser(user *model.User) (*mongo.InsertOneResult, error) {
-	// Set waktu untuk CreatedAt dan UpdatedAt
-	user.ID = primitive.NewObjectID()
+func CreateUser(user *model.User) (*mongo.InsertOneResult, error) {
+	userCollection := config.DB.Collection("users")
+
+	// Set waktu CreatedAt dan UpdatedAt dengan time.Time
+	if user.UserID.IsZero() {
+		user.UserID = primitive.NewObjectID()
+	}
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
-	// Insert data ke MongoDB
-	result, err := r.collection.InsertOne(context.Background(), user)
+	// Set default role jika kosong
+	if user.Role == "" {
+		user.Role = "user"
+	}
+
+	// Simpan user ke database
+	insertData := bson.M{
+		"_id":        user.UserID,
+		"username":   user.Username,
+		"phone":      user.Phone,
+		"password":   user.Password,
+		"role":       user.Role,
+		"created_at": primitive.NewDateTimeFromTime(user.CreatedAt),
+		"updated_at": primitive.NewDateTimeFromTime(user.UpdatedAt),
+	}
+
+	result, err := userCollection.InsertOne(context.Background(), insertData)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Println("Error Insert:", err)
 		return nil, err
 	}
 	return result, nil
 }
 
 // Periksa apakah username sudah digunakan
-func (r *UserRepository) CheckUsername(username string) (bool, error) {
-	count, err := r.collection.CountDocuments(context.Background(), bson.M{"username": username})
+func CheckUsername(username string) (bool, error) {
+	userCollection := config.DB.Collection("users")
+	count, err := userCollection.CountDocuments(context.Background(), bson.M{"username": username})
 	if err != nil {
 		return false, err
 	}

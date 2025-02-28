@@ -30,6 +30,11 @@ func main() {
 		TimeFormat: "15:04:05",
 	}))
 
+	app.Use(func(c *fiber.Ctx) error {
+		c.Set("Content-Type", "application/json")
+		return c.Next()
+	})	
+
 	// Route
 	routes.URL(app)
 
