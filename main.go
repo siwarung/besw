@@ -6,19 +6,12 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/joho/godotenv"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/siwarung/besw/config"
 	"github.com/siwarung/besw/routes"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func main() {
-	// Muat file .env
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
 	// Koneksi ke DB
 	config.ConnectDB()
 
