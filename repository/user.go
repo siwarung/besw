@@ -25,7 +25,7 @@ func CreateUser(user *model.User) (*mongo.InsertOneResult, error) {
 
 	// Set default role jika kosong
 	if user.Role == "" {
-		user.Role = "user"
+		user.Role = "admin"
 	}
 
 	// Simpan user ke database
