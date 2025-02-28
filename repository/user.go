@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/siwarung/besw/model"
@@ -30,6 +31,7 @@ func (r *UserRepository) CreateUser(user *model.User) (*mongo.InsertOneResult, e
 	// Insert data ke MongoDB
 	result, err := r.collection.InsertOne(context.Background(), user)
 	if err != nil {
+		fmt.Println("Error: ", err)
 		return nil, err
 	}
 	return result, nil

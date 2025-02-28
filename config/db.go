@@ -22,11 +22,11 @@ func ConnectDB() {
 		}
 	}
 
-	mongoURI := os.Getenv("MONGOCON")
+	mongoURI := os.Getenv("MONGO_URL")
 	dbName := os.Getenv("MONGO_DB")
 
 	if mongoURI == "" || dbName == "" {
-		log.Fatal("MONGOCON dan MONGO_DB tidak boleh kosong")
+		log.Fatal("MONGO_URL dan MONGO_DB tidak boleh kosong")
 	}
 
 	// Atur opsi koneksi
