@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/siwarung/besw/config"
 	"github.com/siwarung/besw/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -15,9 +14,9 @@ type UserRepository struct {
 	collection *mongo.Collection
 }
 
-func NewUserRepository() *UserRepository {
+func NewUserRepository(db *mongo.Database) *UserRepository {
 	return &UserRepository{
-		collection: config.DB.Collection("users"),
+		collection: db.Collection("users"),
 	}
 }
 

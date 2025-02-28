@@ -8,13 +8,11 @@ import (
 )
 
 type UserController struct {
-	userRepo repository.UserRepository
+	userRepo *repository.UserRepository
 }
 
-func NewUserController(repo repository.UserRepository) *UserController {
-	return &UserController{
-		userRepo: repo,
-	}
+func NewUserController(userRepo *repository.UserRepository) *UserController {
+	return &UserController{userRepo: userRepo}
 }
 
 // handler untuk membuat user baru
@@ -25,6 +23,13 @@ func (uc *UserController) CreateUser(c *fiber.Ctx) error {
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Input tidak valid",
+		})
+	}
+
+	// Validasi input user
+	if err := utils.ValidateUserInput(user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
 		})
 	}
 

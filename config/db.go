@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -14,11 +15,18 @@ var MongoClient *mongo.Client
 var DB *mongo.Database
 
 func ConnectDB() {
-	mongoURI := os.Getenv("MONGO_URI")
+	// Load .env hanya jika berjalan di lokal
+	if os.Getenv("ENV") != "production" {
+		if err := godotenv.Load(); err != nil {
+			log.Println("Tidak dapat membaca file .env, menggunakan environment Heroku")
+		}
+	}
+
+	mongoURI := os.Getenv("MONGOCON")
 	dbName := os.Getenv("MONGO_DB")
 
 	if mongoURI == "" || dbName == "" {
-		log.Fatal("MONGO_URI dan MONGO_DB tidak boleh kosong")
+		log.Fatal("MONGOCON dan MONGO_DB tidak boleh kosong")
 	}
 
 	// Atur opsi koneksi
