@@ -266,3 +266,58 @@ func DeleteProduk(produkID string) (*mongo.DeleteResult, error) {
 	}
 	return result, nil
 }
+
+// Edit satuan produk
+func EditSatuanProduk(satuanProdukID string, satuanProduk *model.SatuanProduk) (*mongo.UpdateResult, error) {
+	satuanCollection := config.DB.Collection("satuan")
+
+	updateData := bson.M{
+		"$set": bson.M{
+			"nama_satuan_produk": satuanProduk.NamaSatuanProduk,
+		},
+	}
+
+	result, err := satuanCollection.UpdateOne(context.Background(), bson.M{"_id": satuanProdukID}, updateData)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// Edit kategori produk
+func EditKategoriProduk(kategoriProdukID string, kategoriProduk *model.KategoriProduk) (*mongo.UpdateResult, error) {
+	kategoriCollection := config.DB.Collection("kategori")
+
+	updateData := bson.M{
+		"$set": bson.M{
+			"nama_kategori_produk": kategoriProduk.NamaKategoriProduk,
+		},
+	}
+
+	result, err := kategoriCollection.UpdateOne(context.Background(), bson.M{"_id": kategoriProdukID}, updateData)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// Edit produk
+func EditProduk(produkID string, produk *model.Produk) (*mongo.UpdateResult, error) {
+	produkCollection := config.DB.Collection("produk")
+
+	updateData := bson.M{
+		"$set": bson.M{
+			"nama_produk":        produk.NamaProduk,
+			"kategori_produk_id": produk.KategoriProdukID,
+			"satuan_produk_id":   produk.SatuanProdukID,
+			"harga":              produk.Harga,
+			"updated_at":         primitive.NewDateTimeFromTime(time.Now()),
+		},
+	}
+
+	result, err := produkCollection.UpdateOne(context.Background(), bson.M{"_id": produkID}, updateData)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}

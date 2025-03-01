@@ -176,3 +176,78 @@ func DeleteProduk(c *fiber.Ctx) error {
 		"message": "Produk berhasil dihapus",
 	})
 }
+
+// Update satuan produk
+func UpdateSatuanProduk(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var satuan model.SatuanProduk
+
+	// Parsing body request
+	if err := c.BodyParser(&satuan); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Format input tidak valid",
+		})
+	}
+
+	// Update data di database
+	_, err := repository.EditSatuanProduk(id, &satuan)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Gagal mengupdate data satuan produk",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Satuan produk berhasil diupdate",
+	})
+}
+
+// Update kategori produk
+func UpdateKategoriProduk(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var kategori model.KategoriProduk
+
+	// Parsing body request
+	if err := c.BodyParser(&kategori); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Format input tidak valid",
+		})
+	}
+
+	// Update data di database
+	_, err := repository.EditKategoriProduk(id, &kategori)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Gagal mengupdate data kategori produk",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Kategori produk berhasil diupdate",
+	})
+}
+
+// Update produk
+func UpdateProduk(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var produk model.Produk
+
+	// Parsing body request
+	if err := c.BodyParser(&produk); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Format input tidak valid",
+		})
+	}
+
+	// Update data di database
+	_, err := repository.EditProduk(id, &produk)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Gagal mengupdate data produk",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Produk berhasil diupdate",
+	})
+}
