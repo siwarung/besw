@@ -20,16 +20,19 @@ func URL(app *fiber.App) {
 	produkRoute := app.Group("/api/p")
 	produkRoute.Post("/insert", controller.CreateProduk)
 	produkRoute.Get("/all", controller.GetAllProduk)
+	produkRoute.Delete("/delete/:id", controller.DeleteProduk)
 
 	// Route satuan produk
 	satuanRoute := app.Group("/api/s")
 	satuanRoute.Post("/insert", controller.CreateSatuanProduk)
 	satuanRoute.Get("/all", controller.GetAllSatuanProduk)
+	satuanRoute.Delete("/delete/:id", controller.DeleteSatuanProduk)
 
 	// Route kategori
 	kategoriRoute := app.Group("/api/c")
 	kategoriRoute.Post("/insert", controller.CreateKategoriProduk)
 	kategoriRoute.Get("/all", controller.GetAllKategoriProduk)
+	kategoriRoute.Delete("/delete/:id", controller.DeleteKategoriProduk)
 
 	// Protected routes (Hanya bisa diakses dengan token JWT)
 	// protected := app.Group("/api/auth", middleware.JWTMiddleware)

@@ -125,3 +125,54 @@ func GetAllSatuanProduk(c *fiber.Ctx) error {
 		"satuan":  satuanList,
 	})
 }
+
+// Menghapus satuan produk
+func DeleteSatuanProduk(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	// Hapus data dari database
+	_, err := repository.DeleteSatuanProduk(id)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Gagal menghapus data satuan produk",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Satuan produk berhasil dihapus",
+	})
+}
+
+// Menghapus kategori produk
+func DeleteKategoriProduk(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	// Hapus data dari database
+	_, err := repository.DeleteKategoriProduk(id)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Gagal menghapus data kategori produk",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Kategori produk berhasil dihapus",
+	})
+}
+
+// Menghapus produk
+func DeleteProduk(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	// Hapus data dari database
+	_, err := repository.DeleteProduk(id)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Gagal menghapus data produk",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Produk berhasil dihapus",
+	})
+}

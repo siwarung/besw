@@ -233,3 +233,36 @@ func GetAllSatuanProduk() ([]model.SatuanProduk, error) {
 
 	return satuanList, nil
 }
+
+// Hapus satuan produk dari database
+func DeleteSatuanProduk(satuanProdukID string) (*mongo.DeleteResult, error) {
+	satuanCollection := config.DB.Collection("satuan")
+
+	result, err := satuanCollection.DeleteOne(context.Background(), bson.M{"_id": satuanProdukID})
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// Hapus kategori produk dari database
+func DeleteKategoriProduk(kategoriProdukID string) (*mongo.DeleteResult, error) {
+	kategoriCollection := config.DB.Collection("kategori")
+
+	result, err := kategoriCollection.DeleteOne(context.Background(), bson.M{"_id": kategoriProdukID})
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// Hapus produk dari database
+func DeleteProduk(produkID string) (*mongo.DeleteResult, error) {
+	produkCollection := config.DB.Collection("produk")
+
+	result, err := produkCollection.DeleteOne(context.Background(), bson.M{"_id": produkID})
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
